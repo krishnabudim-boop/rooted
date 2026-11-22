@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<title>{{ title }}</title>
+<style>
+{{ css }}
+</style>
+</head>
+<body>
+{% for u in units %}
+{% if u.page_type == "cover" %}{% include "cover.html.j2" %}
+{% elif u.page_type == "section_opener" %}{% include "opener.html.j2" %}
+{% elif u.page_type == "back_cover" %}{% include "back.html.j2" %}
+{% else %}{% include "flow.html.j2" %}
+{% endif %}
+{% endfor %}
+<div class="pm" aria-hidden="true">{% for a in anchors %}<a href="#{{ a }}"></a>{% endfor %}</div>
+</body>
+</html>

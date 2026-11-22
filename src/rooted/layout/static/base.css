@@ -1,0 +1,81 @@
+/* Static rules. Dynamic values come from CSS custom properties emitted by build_css. */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; color: var(--c-text); font-family: var(--ff-body); }
+p, h1, h2, h3, ul, ol, li, blockquote, figure, table { margin: 0; padding: 0; }
+img { display: block; }
+
+.unit { display: block; }
+.unit.fixed { position: relative; overflow: hidden; break-inside: avoid; }
+.unit.flow .cols { column-count: var(--cols); column-gap: var(--gutter); orphans: 2; widows: 2; }
+.unit.flow.cols-1 .cols { column-count: auto; }
+
+.el { display: block; }
+.el.break-before { break-before: page; column-span: all; }
+.el-heading { break-after: avoid; }
+.el-heading.span-all { column-span: all; }
+.el-heading.inline-opener { column-span: all; border-top: 3pt solid var(--c-accent); padding-top: 10pt; margin-bottom: var(--space-block); }
+.el p { orphans: 2; widows: 2; }
+.el-paragraph p { margin-bottom: var(--space-paragraph); }
+.el-quote blockquote { border-left: 2.5pt solid var(--c-accent); padding-left: 10pt; margin: 0 0 var(--space-paragraph) 0; }
+.el-caption { margin-bottom: var(--space-paragraph); }
+.end { display: block; width: 0; height: 0; overflow: hidden; }
+
+.el-list ul, .el-list ol { margin: 0 0 var(--space-paragraph) 0; padding-left: 14pt; }
+.el-list li { margin-bottom: calc(var(--space-paragraph) * 0.4); break-inside: avoid; }
+.el-list li.l1 { margin-left: 12pt; }
+.el-list li.l2 { margin-left: 24pt; }
+.el-list li.l3 { margin-left: 36pt; }
+.el-list li.lab { list-style: none; position: relative; }
+.el-list li .lbl { position: absolute; left: -14pt; color: var(--c-accent); }
+.li-row { position: relative; padding-left: 12pt; }
+.li-row .lbl { position: absolute; left: 0; color: var(--c-accent); }
+.li-row.l1 { margin-left: 12pt; }
+.li-row.l2 { margin-left: 24pt; }
+.el-callout .el-table { column-span: none; margin: 4pt 0; }
+.el-list li::marker { color: var(--c-accent); }
+
+.el-table { margin: var(--space-block) 0; column-span: all; }
+.el-table table { width: 100%; border-collapse: collapse; }
+.el-table tr { break-inside: avoid; }
+.el-table th { background: var(--tbl-head-bg); color: var(--tbl-head-fg); text-align: left; }
+.el-table th, .el-table td { padding: var(--tbl-pad); border-bottom: var(--tbl-rule); vertical-align: top; }
+.el-table tbody tr:nth-child(even) td { background: var(--tbl-zebra); }
+.el-table .tcap { margin-bottom: 4pt; }
+
+.el-image, .el-visual, .el-decor { margin: var(--space-block) 0; break-inside: avoid; }
+.el-visual.full_width, .el-visual.full_page, .el-image.full_width { column-span: all; }
+.el-visual.full_page { break-before: page; break-after: page; }
+.el-visual.full_page img { max-height: calc(var(--content-h) - 2em); object-fit: contain; }
+.el-visual img, .el-image img, .el-decor img { max-width: 100%; height: auto; margin: 0 auto; }
+.el-image img, .el-visual img { max-height: calc(var(--content-h) - 2em); object-fit: contain; }
+.el-visual figcaption, .el-image figcaption { margin-top: 4pt; }
+
+.el-callout { margin: var(--space-block) 0; break-inside: avoid; padding: var(--callout-pad); background: var(--callout-bg); border: var(--callout-border); border-radius: var(--callout-radius); }
+.el-callout.sides-left { border: 0; border-left: var(--callout-border); }
+.el-callout.sides-top { border: 0; border-top: var(--callout-border); }
+.el-callout.sides-bottom { border: 0; border-bottom: var(--callout-border); }
+.el-callout .ctitle { margin-bottom: 4pt; }
+.el-callout p:last-child, .el-callout blockquote:last-child { margin-bottom: 0; }
+
+.el-pull_quote { margin: var(--space-block) 0; break-inside: avoid; padding: var(--pq-pad); background: var(--pq-bg); border: var(--pq-border); }
+.el-pull_quote.sides-left { border: 0; border-left: var(--pq-border); }
+.el-pull_quote.sides-top { border: 0; border-top: var(--pq-border); }
+.el-pull_quote.sides-bottom { border: 0; border-bottom: var(--pq-border); }
+
+.el-key_stats { margin: var(--space-block) 0; break-inside: avoid; padding: var(--stat-pad); background: var(--stat-bg); border: var(--stat-border); border-radius: var(--stat-radius); }
+.el-key_stats .sval { display: block; }
+
+.el-toc ol { list-style: none; }
+.el-toc li { padding: 4pt 0; border-bottom: 0.5pt solid var(--c-rule); }
+
+/* fixed pages */
+.region { position: absolute; overflow: hidden; }
+.region.shape { overflow: visible; }
+.region.text { display: block; }
+.region .hero { width: 100%; height: 100%; object-fit: cover; }
+.region p { margin: 0 0 6pt 0; }
+
+/* page-map anchors: no ink, no size */
+.pm { position: absolute; top: 0; left: 0; width: 0; height: 0; overflow: hidden; }
+.pm a { display: block; width: 1px; height: 1px; }

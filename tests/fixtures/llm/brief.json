@@ -1,0 +1,27 @@
+{
+  "raw_text": "",
+  "target_pages": 8,
+  "page_tolerance": 0,
+  "page_size": null,
+  "palette_overrides": [
+    {
+      "role": "primary",
+      "hex": "#1F2A44",
+      "name": "navy"
+    },
+    {
+      "role": "accent",
+      "hex": "#C9A227",
+      "name": "gold"
+    }
+  ],
+  "font_overrides": [],
+  "tone": "executive",
+  "audience": null,
+  "edit_policy": "verbatim",
+  "visuals_policy": "normal",
+  "include_cover": null,
+  "include_back_cover": null,
+  "include_toc": null,
+  "extra_constraints": []
+}

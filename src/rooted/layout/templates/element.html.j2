@@ -1,0 +1,4 @@
+<div class="el el-{{ e.kind }} {{ e.classes | join(' ') }}{% if e.break_before %} break-before{% endif %}" id="{{ e.id }}" data-el="{{ e.id }}" data-blocks="{{ e.attr_blocks }}">
+{% include "elements/" ~ e.kind ~ ".html.j2" ignore missing %}
+<span class="end" id="{{ e.id }}-end"></span>
+</div>

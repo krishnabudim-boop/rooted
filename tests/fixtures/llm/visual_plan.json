@@ -1,0 +1,135 @@
+{
+  "visuals": [
+    {
+      "id": "v01",
+      "kind": "chart",
+      "section_id": "s02",
+      "anchor_block_id": "b0009",
+      "placement": "full_width",
+      "size": "large",
+      "priority": "required",
+      "chart": {
+        "chart_type": "column",
+        "title": {
+          "text": "Families served by region",
+          "provenance": "generated_label",
+          "source": null
+        },
+        "categories": [
+          "North",
+          "Central",
+          "South"
+        ],
+        "series": [
+          {
+            "name": "Families",
+            "points": [
+              {
+                "value": 5200.0,
+                "raw": "5,200",
+                "source": {
+                  "block_id": "b0009",
+                  "start": 31,
+                  "end": 36,
+                  "text": "5,200"
+                }
+              },
+              {
+                "value": 4100.0,
+                "raw": "4,100",
+                "source": {
+                  "block_id": "b0009",
+                  "start": 46,
+                  "end": 51,
+                  "text": "4,100"
+                }
+              },
+              {
+                "value": 3100.0,
+                "raw": "3,100",
+                "source": {
+                  "block_id": "b0009",
+                  "start": 62,
+                  "end": 67,
+                  "text": "3,100"
+                }
+              }
+            ]
+          }
+        ],
+        "unit": "families",
+        "value_axis_label": null,
+        "highlight_category": null
+      },
+      "diagram": null,
+      "decor": null,
+      "icon_name": null,
+      "image_block_id": null,
+      "caption": null,
+      "alt_text": "Column chart of families served by region"
+    },
+    {
+      "id": "v02",
+      "kind": "cover_art",
+      "section_id": null,
+      "anchor_block_id": null,
+      "placement": "cover",
+      "size": "large",
+      "priority": "optional",
+      "chart": null,
+      "diagram": null,
+      "decor": {
+        "motif": "waves",
+        "color_roles": [
+          "primary",
+          "accent"
+        ],
+        "seed": 7
+      },
+      "icon_name": null,
+      "image_block_id": null,
+      "caption": null,
+      "alt_text": "Abstract wave motif"
+    },
+    {
+      "id": "v03",
+      "kind": "decor",
+      "section_id": "s01",
+      "anchor_block_id": "b0003",
+      "placement": "opener",
+      "size": "large",
+      "priority": "optional",
+      "chart": null,
+      "diagram": null,
+      "decor": {
+        "motif": "band",
+        "color_roles": [
+          "accent",
+          "primary"
+        ],
+        "seed": 3
+      },
+      "icon_name": null,
+      "image_block_id": null,
+      "caption": null,
+      "alt_text": "Decorative band"
+    },
+    {
+      "id": "v04",
+      "kind": "icon",
+      "section_id": "s01",
+      "anchor_block_id": "b0006",
+      "placement": "inline",
+      "size": "small",
+      "priority": "optional",
+      "chart": null,
+      "diagram": null,
+      "decor": null,
+      "icon_name": "home",
+      "image_block_id": null,
+      "caption": null,
+      "alt_text": "Home icon"
+    }
+  ],
+  "rationale": "Regional figures are comparable; one column chart plus light decor."
+}

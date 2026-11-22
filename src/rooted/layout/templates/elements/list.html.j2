@@ -1,0 +1,4 @@
+<{{ "ol" if e.ordered else "ul" }} class="t-body">
+{% for b in e.blocks %}<li class="l{{ b.level }}{% if b.label %} lab{% endif %}">{% if b.label %}<span class="lbl">{{ b.label }}</span>{% endif %}{{ b.html }}</li>
+{% endfor %}
+</{{ "ol" if e.ordered else "ul" }}>

@@ -1,0 +1,139 @@
+{
+  "schema_version": "1",
+  "profile": {
+    "purpose": "Report annual program impact to donors",
+    "audience": "Donors and board members",
+    "report_type": "annual_report",
+    "tone": "executive",
+    "summary": "Nonprofit annual impact report with reach figures by region."
+  },
+  "cover": {
+    "title": {
+      "text": "Annual Impact Report 2025",
+      "provenance": "verbatim",
+      "source": {
+        "block_id": "b0001",
+        "start": 0,
+        "end": 25,
+        "text": "Annual Impact Report 2025"
+      }
+    },
+    "subtitle": null,
+    "eyebrow": null,
+    "byline": {
+      "text": "Rooted Foundation",
+      "provenance": "verbatim",
+      "source": {
+        "block_id": "b0002",
+        "start": 0,
+        "end": 17,
+        "text": "Rooted Foundation"
+      }
+    },
+    "date": null,
+    "hero_image_block_id": null,
+    "consumed_block_ids": [
+      "b0001",
+      "b0002"
+    ]
+  },
+  "include_toc": false,
+  "sections": [
+    {
+      "id": "s01",
+      "title": {
+        "text": "Introduction",
+        "provenance": "verbatim",
+        "source": {
+          "block_id": "b0003",
+          "start": 0,
+          "end": 12,
+          "text": "Introduction"
+        }
+      },
+      "heading_block_id": "b0003",
+      "block_ids": [
+        "b0003",
+        "b0004",
+        "b0005",
+        "b0006",
+        "b0007"
+      ],
+      "opener": true,
+      "page_type": "body",
+      "page_budget": 3.0,
+      "callouts": [],
+      "pull_quotes": [
+        {
+          "id": "q01",
+          "excerpt": {
+            "block_id": "b0005",
+            "start": 18,
+            "end": 50,
+            "text": "help every family put down roots"
+          },
+          "anchor_block_id": "b0005"
+        }
+      ],
+      "key_stats": [
+        {
+          "id": "k01",
+          "value": "18%",
+          "label": {
+            "text": "growth in families served",
+            "provenance": "generated_label",
+            "source": null
+          },
+          "source": {
+            "block_id": "b0004",
+            "start": 52,
+            "end": 68,
+            "text": "up 18% from 2024"
+          },
+          "anchor_block_id": "b0004"
+        }
+      ]
+    },
+    {
+      "id": "s02",
+      "title": {
+        "text": "Results",
+        "provenance": "verbatim",
+        "source": {
+          "block_id": "b0008",
+          "start": 0,
+          "end": 7,
+          "text": "Results"
+        }
+      },
+      "heading_block_id": "b0008",
+      "block_ids": [
+        "b0008",
+        "b0009",
+        "b0010",
+        "b0012",
+        "b0013"
+      ],
+      "opener": true,
+      "page_type": "data",
+      "page_budget": 3.0,
+      "callouts": [
+        {
+          "id": "c01",
+          "kind": "highlight",
+          "title": null,
+          "block_ids": [
+            "b0011"
+          ]
+        }
+      ],
+      "pull_quotes": [],
+      "key_stats": []
+    }
+  ],
+  "back_cover_text": [],
+  "dropped_blocks": [],
+  "rewrites": [],
+  "target_pages": 8,
+  "notes": []
+}

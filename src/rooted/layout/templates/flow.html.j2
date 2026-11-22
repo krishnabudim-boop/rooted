@@ -1,0 +1,7 @@
+<section class="unit flow pg-{{ u.name }} cols-{{ u.cols }}" id="{{ u.id }}" data-unit="{{ u.id }}" data-page-type="{{ u.page_type }}" style="{% if not u.first %}break-before: page;{% endif %}">
+<div class="cols">
+{% for e in u.elements %}
+{% include "element.html.j2" %}
+{% endfor %}
+</div>
+</section>

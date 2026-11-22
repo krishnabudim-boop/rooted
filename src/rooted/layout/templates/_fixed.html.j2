@@ -1,0 +1,9 @@
+{# Shared body of a fixed (one page) unit: element marks + absolutely positioned regions #}
+{% for e in u.elements %}<span class="end" id="{{ e.id }}" data-el="{{ e.id }}" data-blocks="{{ e.attr_blocks }}"></span><span class="end" id="{{ e.id }}-end"></span>{% endfor %}
+{% for r in u.regions %}
+<div class="region {{ r.kind }} {{ r.classes | join(' ') }}" style="{{ r.style }}" data-region="{{ r.name }}" data-owner="{{ r.owner }}"{% if r.fit %} data-fit="1"{% endif %}>
+{% if r.kind == "image" %}<img class="hero" src="{{ r.src }}" alt="{{ r.alt }}">
+{% elif r.kind == "text" %}{% for line in r.text.split("\n") %}<p>{{ line }}</p>{% endfor %}
+{% endif %}
+</div>
+{% endfor %}

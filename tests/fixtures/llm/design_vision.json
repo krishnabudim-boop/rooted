@@ -1,0 +1,36 @@
+{
+  "overall_style": "Corporate and restrained: full-bleed navy cover, gold accents, geometric sans, generous margins.",
+  "page_classifications": [
+    {"page_index": 0, "page_type": "cover", "description": "Full navy bleed with a large white title and a thin gold band."},
+    {"page_index": 1, "page_type": "body", "description": "Two-column body text under a navy heading."}
+  ],
+  "role_assignments": [
+    {"cluster_id": "f01", "role": "body"},
+    {"cluster_id": "f02", "role": "h1"},
+    {"cluster_id": "f03", "role": "display"}
+  ],
+  "color_roles": [
+    {"hex": "#1F2A44", "role": "primary"},
+    {"hex": "#C9A227", "role": "accent"},
+    {"hex": "#222222", "role": "text"}
+  ],
+  "font_characters": [
+    {"cluster_id": "f01", "classification": "sans", "similar_open_fonts": ["Montserrat", "Nunito Sans"]},
+    {"cluster_id": "f03", "classification": "sans", "similar_open_fonts": ["Montserrat"]}
+  ],
+  "templates": [
+    {
+      "page_type": "cover", "example_page_index": 0, "columns": 1, "background_hex": "#1F2A44",
+      "shows_header": false, "shows_footer": false,
+      "regions": [
+        {"name": "title", "kind": "text", "bbox": {"x0": 0.1, "y0": 0.18, "x1": 0.9, "y1": 0.4}, "style_role": "display"},
+        {"name": "shape", "kind": "shape", "bbox": {"x0": 0.0, "y0": 0.85, "x1": 1.0, "y1": 0.88}, "fill_hex": "#C9A227"}
+      ]
+    },
+    {"page_type": "body", "example_page_index": 1, "columns": 2, "shows_header": true, "shows_footer": true, "regions": []}
+  ],
+  "callout_description": "Light filled box with a thick gold bar on the left edge.",
+  "table_description": "Navy header row with white text, thin gray rules between rows.",
+  "figure_description": "Charts with captions below and light gridlines.",
+  "motifs": ["thin gold rules", "full-bleed navy cover"]
+}

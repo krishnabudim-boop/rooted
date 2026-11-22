@@ -1,0 +1,3 @@
+<section class="unit fixed pg-{{ u.name }}" id="{{ u.id }}" data-unit="{{ u.id }}" data-page-type="{{ u.page_type }}" style="width: {{ '%.2f' | format(u.width) }}pt; height: {{ '%.2f' | format(u.height) }}pt;{% if not u.first %} break-before: page;{% endif %}">
+{% include "_fixed.html.j2" %}
+</section>

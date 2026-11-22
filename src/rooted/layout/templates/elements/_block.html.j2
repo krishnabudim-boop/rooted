@@ -1,0 +1,9 @@
+{# one block inside a callout #}
+{% if b.type == "quote" %}<blockquote class="t-body">{{ b.html }}</blockquote>
+{% elif b.type == "heading" %}<p class="t-h3">{{ b.html }}</p>
+{% elif b.type == "list_item" %}<p class="t-body li-row l{{ b.level }}"><span class="lbl">{{ b.label if b.label else ("&bull;"|safe) }}</span> {{ b.html }}</p>
+{% elif b.type == "table" %}<div class="el-table">{% include "elements/_table.html.j2" %}</div>
+{% elif b.type == "caption" %}<p class="t-caption">{{ b.html }}</p>
+{% elif b.type == "image" and b.src %}<img src="{{ b.src }}" alt="{{ b.alt }}">
+{% else %}<p class="t-body">{{ b.html }}</p>
+{% endif %}

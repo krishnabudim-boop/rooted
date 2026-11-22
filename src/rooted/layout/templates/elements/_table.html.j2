@@ -1,0 +1,9 @@
+{% if b.caption %}<p class="t-caption tcap">{{ b.caption }}</p>{% endif %}
+<table>
+{% for row in b.rows %}
+{% if loop.first and b.header_rows %}<thead>{% elif loop.index0 == b.header_rows %}<tbody>{% endif %}
+<tr>{% for c in row %}<{{ "th" if c.head else "td" }} class="{{ "t-table-header" if c.head else "t-table-body" }}"{% if c.colspan > 1 %} colspan="{{ c.colspan }}"{% endif %}{% if c.rowspan > 1 %} rowspan="{{ c.rowspan }}"{% endif %}>{{ c.html }}</{{ "th" if c.head else "td" }}>{% endfor %}</tr>
+{% if loop.index == b.header_rows and b.header_rows %}</thead>{% endif %}
+{% endfor %}
+{% if b.rows | length > b.header_rows %}</tbody>{% endif %}
+</table>
