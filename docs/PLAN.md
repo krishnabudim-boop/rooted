@@ -291,6 +291,26 @@ Notes:
 - `CachingLLMClient` wraps any client with a disk cache keyed by the task, model, system prompt, prompt, image hashes, and schema.
 - `FakeLLMClient` (tests) implements the same protocol.
 
+### 11a. Backends (added 2026-11-22)
+
+`LLMConfig.backend` is `"claude-code"` (default) or `"api"`; the env var `ROOTED_LLM_BACKEND` sets the default and `--backend` overrides it per run. `build_client` picks the implementation and always wraps it in `CachingLLMClient`; the cache key includes `backend:model`, so results never mix.
+
+**claude-code** (`src/rooted/llm_claude_code.py`, `ClaudeCodeLLMClient`) uses the user's Claude Code login, with no API key. Per call it runs:
+
+```
+claude -p --input-format stream-json --output-format stream-json --verbose \
+  --model <id|alias> --effort <level> --system-prompt <system> --tools "" \
+  --no-session-persistence --strict-mcp-config --json-schema '<anthropic.transform_schema(Model)>'
+```
+
+The prompt (and any base64 image blocks) is one `{"type":"user",...}` JSON line on stdin. stream-json is used for every call because it is the only mode that accepts images. The last `result` event gives `structured_output`, which is validated into the pydantic model. The child runs in a fresh temp dir, with `CLAUDECODE`, `CLAUDE_PID`, `CLAUDE_EFFORT`, `CLAUDE_CODE_*`, `ANTHROPIC_API_KEY` and `ANTHROPIC_AUTH_TOKEN` removed from its env. `--bare` is not used, because it would disable the OAuth login. The timeout is 900s.
+
+Error mapping: `claude` missing gives `LLMError` (install it or use `--backend api`). Auth errors (401/403, "/login") give `LLMError` ("run `claude` and use /login") and are not retried. Rate limit, overloaded, 429/5xx and timeouts are retried with the `llm.py` backoff constants, then `LLMError`. `stop_reason == "refusal"` gives `LLMRefusalError`, and `max_tokens` gives `LLMTruncatedError`. A missing or invalid `structured_output`, or `error_max_structured_output_retries`, gives `LLMValidationError`. Any other `is_error` gives `LLMError`. Usage, cost (`total_cost_usd`) and duration are logged. `server_fallbacks` and the beta settings are ignored. `max_tokens` is passed through `CLAUDE_CODE_MAX_OUTPUT_TOKENS`.
+
+**api** is the `AnthropicLLMClient` described above.
+
+`rooted doctor` has a "claude cli" check (`claude --version` and `claude auth status`). The API-credentials check is informational only.
+
 ---
 
 ## 12. Implementation work packages

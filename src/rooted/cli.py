@@ -3,10 +3,10 @@
     rooted build CONTENT.docx --model REF.pdf (--brief TEXT | --brief-file F)
                  [-o out.pdf] [--work-dir DIR] [--stage STAGE] [--from STAGE]
                  [--force] [--dry-run] [--renderer chromium|weasyprint]
-                 [--llm-model ID] [--effort LEVEL] [--no-fallbacks]
+                 [--backend claude-code|api] [--llm-model ID] [--effort LEVEL] [--no-fallbacks]
                  [--reuse-embedded-fonts] [--offline] [-v/-q]
     rooted inspect-design REF.pdf [--work-dir DIR]   # design stage only, prints summary
-    rooted doctor                                    # checks Chromium, fonts cache, API key
+    rooted doctor                                    # checks Chromium, fonts cache, claude CLI login
 """
 
 from __future__ import annotations
@@ -33,6 +33,13 @@ app = typer.Typer(
 
 _RENDERERS = ("chromium", "weasyprint")
 _EFFORTS = ("low", "medium", "high", "xhigh", "max")
+_BACKENDS = ("claude-code", "api")
+_BACKEND_HELP = "LLM backend: claude-code (default; your Claude Code login) or api (Anthropic API key)."
+
+
+def _check_backend(backend: Optional[str]) -> None:
+    if backend is not None and backend not in _BACKENDS:
+        raise InputError(f"--backend must be one of {', '.join(_BACKENDS)}")
 
 
 def _fail(err: Exception, verbose: bool = False) -> typer.Exit:
@@ -67,6 +74,7 @@ def build(
     force: bool = typer.Option(False, "--force", help="Ignore cached artifacts and re-run every stage."),
     dry_run: bool = typer.Option(False, "--dry-run", help="Plan only: no LLM calls, no PDF."),
     renderer: str = typer.Option("chromium", "--renderer", help="chromium (default) or weasyprint."),
+    backend: Optional[str] = typer.Option(None, "--backend", help=_BACKEND_HELP),
     llm_model: Optional[str] = typer.Option(None, "--llm-model", help="Claude model id."),
     effort: Optional[str] = typer.Option(None, "--effort", help="Default effort: low|medium|high|xhigh|max."),
     no_fallbacks: bool = typer.Option(False, "--no-fallbacks", help="Disable server-side refusal fallbacks."),
@@ -86,6 +94,7 @@ def build(
             raise InputError("use either --brief or --brief-file, not both")
         if renderer not in _RENDERERS:
             raise InputError(f"--renderer must be one of {', '.join(_RENDERERS)}")
+        _check_backend(backend)
         if effort is not None and effort not in _EFFORTS:
             raise InputError(f"--effort must be one of {', '.join(_EFFORTS)}")
         if not content.is_file():
@@ -100,6 +109,8 @@ def build(
                 raise InputError(f"cannot read brief file {brief_file}: {e}") from e
 
         llm_cfg = LLMConfig()
+        if backend:
+            llm_cfg.backend = backend  # type: ignore[assignment]
         if llm_model:
             llm_cfg.model = llm_model
         if effort:
@@ -152,6 +163,7 @@ def build(
 def inspect_design(
     reference: Path = typer.Argument(..., help="Reference PDF."),
     work_dir: Optional[Path] = typer.Option(None, "--work-dir", help="Artifact dir (default .rooted/inspect-<hash>)."),
+    backend: Optional[str] = typer.Option(None, "--backend", help=_BACKEND_HELP),
     llm_model: Optional[str] = typer.Option(None, "--llm-model", help="Claude model id."),
     offline: bool = typer.Option(False, "--offline", help="Never download fonts."),
     verbose: int = typer.Option(0, "--verbose", "-v", count=True),
@@ -169,7 +181,8 @@ def inspect_design(
         if not reference.is_file():
             raise InputError(f"reference PDF not found: {reference}")
         wd_path = work_dir or Path(".rooted") / f"inspect-{hash_inputs(reference)[:8]}"
-        llm_cfg = LLMConfig(**({"model": llm_model} if llm_model else {}))
+        _check_backend(backend)
+        llm_cfg = LLMConfig(**({"model": llm_model} if llm_model else {}), **({"backend": backend} if backend else {}))
         config = BuildConfig(
             content_path=reference,  # unused by the design stage
             reference_pdf=reference,
@@ -299,16 +312,30 @@ def _check_font_cache() -> tuple[str, str]:
 
 
 def _check_credentials() -> tuple[str, str]:
+    """Informational: only the `--backend api` path needs an API credential."""
     if os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN"):
-        return OK, "Anthropic credential found in the environment"
+        return OK, "Anthropic credential found in the environment (used only with --backend api)"
     if shutil.which("ant"):
-        return WARN, "no API key in the environment; the `ant` CLI is installed, run `ant auth login` if not signed in"
-    return WARN, "no credentials found; run `ant auth login` or set ANTHROPIC_API_KEY (needed for build, not --dry-run)"
+        return OK, "not needed for the claude-code backend; the `ant` CLI is installed for --backend api"
+    return OK, "not needed for the claude-code backend (only for --backend api: set ANTHROPIC_API_KEY or `ant auth login`)"
+
+
+def _check_claude_cli() -> tuple[str, str]:
+    from rooted.llm_claude_code import claude_auth_status
+
+    st = claude_auth_status()
+    if not st.path:
+        return WARN, "claude CLI not found; install Claude Code (https://claude.com/claude-code) or use --backend api"
+    if st.error:
+        return WARN, f"claude at {st.path} ({st.version}): could not read login status: {st.error}"
+    if not st.logged_in:
+        return FAIL, f"claude {st.version} found but not logged in; run `claude` and use /login"
+    return OK, f"claude {st.version} at {st.path}; logged in ({st.auth_method})"
 
 
 @app.command()
 def doctor() -> None:
-    """Check environment: Playwright Chromium, Python packages, font cache, API credentials."""
+    """Check environment: Playwright Chromium, Python packages, font cache, Claude CLI login, API credentials."""
     console = get_console()
     checks = [
         ("python", _check_python),
@@ -316,6 +343,7 @@ def doctor() -> None:
         ("chromium", _check_chromium),
         ("weasyprint", _check_weasyprint),
         ("font cache", _check_font_cache),
+        ("claude cli", _check_claude_cli),
         ("api credentials", _check_credentials),
     ]
     table = Table(title="rooted doctor")

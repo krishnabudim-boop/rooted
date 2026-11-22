@@ -416,7 +416,13 @@ class CachingLLMClient:
 
 def build_client(config: LLMConfig, cache_dir: Path | None = None) -> LLMClient:
     """Factory used by the pipeline."""
-    client: LLMClient = AnthropicLLMClient(config)
+    client: LLMClient
+    if config.backend == "api":
+        client = AnthropicLLMClient(config)
+    else:
+        from rooted.llm_claude_code import ClaudeCodeLLMClient
+
+        client = ClaudeCodeLLMClient(config)
     if config.response_cache and cache_dir is not None:
-        client = CachingLLMClient(client, cache_dir, model_name=config.model)
+        client = CachingLLMClient(client, cache_dir, model_name=f"{config.backend}:{config.model}")
     return client

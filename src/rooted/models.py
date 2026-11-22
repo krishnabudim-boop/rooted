@@ -1065,7 +1065,16 @@ class BuildReport(RootedModel):
 # --------------------------------------------------------------------------
 
 
+def _default_backend() -> str:
+    import os
+
+    return os.environ.get("ROOTED_LLM_BACKEND") or "claude-code"
+
+
 class LLMConfig(RootedModel):
+    # "claude-code": the `claude -p` CLI with the user's Claude login (default). "api": Anthropic SDK + API key.
+    # Env ROOTED_LLM_BACKEND overrides the default; API-only fields below are ignored by claude-code.
+    backend: Literal["claude-code", "api"] = Field(default_factory=_default_backend)  # type: ignore[arg-type]
     model: str = "claude-opus-5-5"
     max_tokens: int = 32000
     effort: str = "high"  # low | medium | high | xhigh | max (per-call override allowed)
